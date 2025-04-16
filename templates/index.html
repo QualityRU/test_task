@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Загрузка XML</title>
+        <script>
+            function uploadFile(event) {
+                event.preventDefault();
+
+                var formData = new FormData();
+                var fileInput = document.querySelector('input[name="xml_file"]');
+                var file = fileInput.files[0];
+
+                if (!file) {
+                    document.getElementById('status').textContent = "Файл не выбран";
+                    return;
+                }
+                formData.append('xml_file', file);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload', true);
+
+                xhr.onload = function () {
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (xhr.status === 200) {
+                        if (response.status === 'success') {
+                            document.getElementById('status').textContent = response.message;
+                            document.getElementById('status').style.color = 'green';
+                        } else {
+                            document.getElementById('status').textContent = response.message;
+                            document.getElementById('status').style.color = 'red';
+                        }
+                    }
+                };
+
+                xhr.send(formData);
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Загрузка XML-файла</h1>
+        <form onsubmit="uploadFile(event)">
+            <input type="file" name="xml_file">
+            <button type="submit">Загрузить</button>
+        </form>
+        <div id="status"></div>
+    </body>
+</html>
