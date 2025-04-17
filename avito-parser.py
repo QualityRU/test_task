@@ -16,6 +16,7 @@ file_index = 1
 
 
 def save_to_xml(ads, index):
+    """Сохранение в xml-файл."""
     root = ET.Element('data')
 
     for ad in ads:
@@ -34,6 +35,7 @@ def save_to_xml(ads, index):
 
 
 def add_ad(ad):
+    """Разбитие по 2000 объявлений в xml-файле."""
     global ads_buffer, file_index
 
     if not os.path.exists(OUTPUT_DIR):
@@ -49,6 +51,7 @@ def add_ad(ad):
 
 
 def get_homes(url):
+    """Загрузка страницы с недвижимостью."""
     print('Загрузка страницы ...')
     response = requests.get(url=url, headers=HEADERS)
 
@@ -86,7 +89,7 @@ def get_homes(url):
         ad['area'] = (
             soup.find_all('li', 'params-paramsList__item-_2Y2O')[1]
             .get_text()
-            .replace('\xa0', ',')
+            .replace('\xa0', ' ')
         )
         ad['link'] = 'https://www.avito.ru' + url_kv.split('?context=')[0]
 
