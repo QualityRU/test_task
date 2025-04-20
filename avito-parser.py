@@ -67,12 +67,15 @@ class AvitoParser:
         try:
             response = requests.get(url=url, headers=headers, timeout=30)
             response.raise_for_status()
+            time.sleep(15)
             return BeautifulSoup(response.text, 'html.parser')
         except requests.exceptions.RequestException as e:
             print(f'Ошибка при загрузке страницы {url}: {str(e)}')
+            time.sleep(15)
             return None
         except Exception as e:
             print(f'Неожиданная ошибка при загрузке страницы {url}: {str(e)}')
+            time.sleep(15)
             return None
 
     def parse_home_page(self, url):
@@ -118,7 +121,6 @@ class AvitoParser:
                 'div',
                 'iva-item-titleStep-zichc iva-item-ivaItemRedesign-u3mVt',
             )
-            time.sleep(15)
 
             for home in homes:
                 try:
@@ -131,7 +133,6 @@ class AvitoParser:
                     ad = self.parse_home_page(full_url)
                     if ad:
                         self.add_ad(ad)
-                        time.sleep(15)
                 except Exception as e:
                     print(f'Ошибка при обработке объявления: {str(e)}')
                     continue
